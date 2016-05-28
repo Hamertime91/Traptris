@@ -115,12 +115,19 @@ def new_board():
 			for y in xrange(rows) ]
 	board += [[ 1 for x in xrange(cols)]]
 	return board
+ 
+def new_subsurf():
+	subsurf = [ [ 0 for x in xrange(cols) ]
+			for y in xrange(rows*2) ]
+	subsurf += [[ 1 for x in xrange(cols)]]
+	return subsurf
+
 
 class TetrisApp(object):
 	def __init__(self):
 		pygame.init()
 		pygame.key.set_repeat(250,25)
-		self.width = cell_size*(cols+6)
+		self.width = cell_size*(cols+16)
 		self.height = cell_size*rows
 		self.rlim = cell_size*cols
 		self.bground_grid = [[ 8 if x%2==y%2 else 0 for x in xrange(cols)] for y in xrange(rows)]
@@ -149,6 +156,7 @@ class TetrisApp(object):
 	
 	def init_game(self):
 		self.board = new_board()
+		self.subsurf = new_subsurf()
 		self.new_stone()
 		self.level = 1
 		self.score = 0
@@ -195,6 +203,22 @@ class TetrisApp(object):
 							  cell_size, 
 							cell_size,
 							cell_size),0)
+
+	def draw_subsurf(self, matrix, offset):
+		off_x, off_y  = offset
+		for y, row in enumerate(matrix):
+			for x, val in enumerate(row):
+				if val:
+					pygame.draw.rect(
+						self.screen,
+						colors[val],
+						pygame.Rect(
+							(off_x+x) *
+							  cell_size,
+							(off_y+y) *
+							  cell_size, 
+							cell_size/2,
+							cell_size/2),0)
 	
 	def add_cl_lines(self, n):
 		linescores = [0, 40, 100, 300, 1200]
@@ -298,6 +322,10 @@ Press space to continue""" % self.score)
 						(255,255,255),
 						(self.rlim+1, 0),
 						(self.rlim+1, self.height-1))
+					pygame.draw.line(self.screen,
+						(255,255,255),
+						(self.rlim+7, 0),
+						(self.rlim+7, self.height-1))
 					self.disp_msg("Next:", (
 						self.rlim+cell_size,
 						2))
@@ -310,6 +338,8 @@ Press space to continue""" % self.score)
 						(self.stone_x, self.stone_y))
 					self.draw_matrix(self.next_stone,
 						(cols+1,2))
+					self.draw_matrix(self.subsurf,
+						(cols+1, 0))
 			pygame.display.update()
 			
 			for event in pygame.event.get():
