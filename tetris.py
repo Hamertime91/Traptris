@@ -322,10 +322,8 @@ Press space to continue""" % self.score)
 						(255,255,255),
 						(self.rlim+1, 0),
 						(self.rlim+1, self.height-1))
-					pygame.draw.line(self.screen,
-						(255,255,255),
-						(self.rlim+7, 0),
-						(self.rlim+7, self.height-1))
+     					self.draw_matrix(self.subsurf,
+						(self.rlim+7, 0))
 					self.disp_msg("Next:", (
 						self.rlim+cell_size,
 						2))
