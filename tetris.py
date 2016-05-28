@@ -213,10 +213,10 @@ class TetrisApp(object):
 						self.screen,
 						colors[val],
 						pygame.Rect(
-							(off_x+x) *
-							  cell_size,
-							(off_y+y) *
-							  cell_size, 
+							(off_x) *
+							  cell_size + x*cell_size/2,
+							(off_y) *
+							  cell_size + y*cell_size/2, 
 							cell_size/2,
 							cell_size/2),0)
 	
